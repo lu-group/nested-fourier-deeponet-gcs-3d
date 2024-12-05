@@ -7,6 +7,11 @@ The data and code for the paper [J. E. Lee, M. Zhu, Z. Xi, K. Wang, Y. O. Yuan, 
 ## Data
 The full dataset for Nested Fourier-DeepONet is available on [OneDrive](https://yaleedu-my.sharepoint.com/:f:/r/personal/lu_lu_yale_edu/Documents/datasets/2024_Lee?csf=1&web=1&e=Rk14Bn).
 
+The raw data is from the [repository](https://github.com/gegewen/nested-fno). The steps to convert raw data to our dataset:
+- step 1: download [raw data](https://drive.google.com/drive/u/1/folders/1gElIBiZW6NayuEWxgDn8cv94_4e_LF4-)
+- step 2: running the [code](https://github.com/gegewen/nested-fno/blob/main/data_config/file_config.sh) to convert `.npy` file into `.pt` files
+- step 3: running the code to covert `.pt` files into our `.npz` files.
+
 It is generated from [meta data](https://github.com/gegewen/nested-fno).
 
 ## Code
