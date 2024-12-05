@@ -5,7 +5,9 @@
 The data and code for the paper [J. E. Lee, M. Zhu, Z. Xi, K. Wang, Y. O. Yuan, & L. Lu. Efficient and generalizable nested Fourier-DeepONet for three-dimensional geological carbon sequestration. *Engineering Applications of Computational Fluid Mechanics*, 18 (1), 2024.](https://doi.org/10.1080/19942060.2024.2435457)
 
 ## Data
-Download data from [OneDrive](https://yaleedu-my.sharepoint.com/:f:/r/personal/lu_lu_yale_edu/Documents/datasets/2024_Lee?csf=1&web=1&e=Rk14Bn)
+The full dataset for Nested Fourier-DeepONet is available on [OneDrive](https://yaleedu-my.sharepoint.com/:f:/r/personal/lu_lu_yale_edu/Documents/datasets/2024_Lee?csf=1&web=1&e=Rk14Bn).
+
+It is generated from [meta data](https://github.com/gegewen/nested-fno).
 
 ## Code
 to be uploaded
