@@ -39,7 +39,7 @@ Gas saturation:
 
 **Evaluation**
 
-Outputs saved in `npz` files are required to run the following evaluation code.
+Outputs saved in `.npz` files are required to run the following evaluation code.
 
 Pressure buildup:
 - Run [dP_evaluation_code.py](https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/dP_evaluation_code.py)
