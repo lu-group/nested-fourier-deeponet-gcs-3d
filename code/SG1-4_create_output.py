@@ -344,7 +344,7 @@ Net = MIONetCartesianProd(
 
 nval = 1
 
-trunk_input = np.load('trunk_input.npy').astype(np.float32)
+trunk_input = np.load('../datasets/trunk_input.npy').astype(np.float32)
 t = trunk_input
 
 mean_ = np.load(f'./dP{level}_inputs_mean_std.npz')['mean']
@@ -370,7 +370,7 @@ def rel(y_true, y_pred):
 model = dde.Model(data, Net)
 model.compile("adam", loss=rel, lr=1e-3, decay=("step", 5965*2*round(24 / time_batch), 0.9))
 
-directory = f'./'
+directory = f'./dP{level}_saved_models'
 model_name = f'model.ckpt-xxxx' #Write model name here
 
 x_test1 = np.load(f'./dP_LGR{level}_test_input1.npz')['input'].astype(np.float32)
@@ -382,8 +382,8 @@ x_test_MIO = np.load(f'./dP_LGR{level}_test_input1.npz')['input'][:, 0, 0, 0, 5:
 
 model.restore(f"{directory}/{model_name}", verbose = 1)
 
-global_data = np.genfromtxt('dP0_test.txt', delimiter='\n', dtype=str)
-lgr_data = np.genfromtxt('level1-4_test.txt', delimiter='\n', dtype=str)
+global_data = np.genfromtxt('../datasets/dP0_test.txt', delimiter='\n', dtype=str)
+lgr_data = np.genfromtxt('../datasets/level1-4_test.txt', delimiter='\n', dtype=str)
 
 if level == 1:    
     next_level_input = np.empty((0, 24, 40, 40, 50, 1))

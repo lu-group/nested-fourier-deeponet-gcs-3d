@@ -349,7 +349,7 @@ eps = 0.0001
 
 # t = np.cumsum(np.power(1.421245, range(24))).astype(np.float32)[:, None]
 # t = t / t[-1]
-trunk_input = np.load('./trunk_input.npy').astype(np.float32)
+trunk_input = np.load('../datasets/trunk_input.npy').astype(np.float32)
 t = trunk_input
 
 mean_ = np.load(f'./dP{level}_inputs_mean_std.npz')['mean']
@@ -399,7 +399,7 @@ def mkdir(path):
     else:
         return False
 
-path = f'./dP{level}_model'
+path = f'./dP{level}_saved_models'
 mkdir(path)
 
 start_time = time.time()

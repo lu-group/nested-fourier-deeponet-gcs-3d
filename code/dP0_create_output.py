@@ -3,11 +3,11 @@ os.environ['DDE_BACKEND'] = 'pytorch'
 from deepxde.nn import activations
 from deepxde.nn.pytorch.fnn import FNN
 import deepxde as dde
+import time
 import torch
 import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
-import time
 
 class MIONetCartesianProd(dde.nn.pytorch.NN):
     """MIONet with two input functions for Cartesian product format."""
@@ -289,8 +289,8 @@ class decoder(nn.Module):
         x2 = self.w3(x.view(batchsize, self.width, -1)).view(batchsize, self.width, size_x, size_y, size_z)
         x = x1 + x2
 
-        x = x[:, :, self.padding:-self.padding,
-            self.padding:-self.padding, self.padding:-self.padding]
+        x = x[:, :, self.padding * 2:-self.padding * 2,
+            self.padding * 2:-self.padding * 2, self.padding:-self.padding]
 
         x = x.permute(0, 2, 3, 4, 1)
         x = self.fc1(x)
@@ -304,15 +304,15 @@ class branch1(nn.Module):
         super(branch1, self).__init__()
         self.width = width
         self.padding = 8
-        self.fc0 = nn.Linear(31, self.width)
+        self.fc0 = nn.Linear(7, self.width)
 
     def forward(self, x):
         # batchsize = x.shape[0]
         # size_x, size_y, size_z = x.shape[1], x.shape[2], x.shape[3]
         x = self.fc0(x)
         x = x.permute(0, 4, 1, 2, 3)
-        x = F.pad(x, [self.padding, self.padding, self.padding, self.padding, self.padding,
-                      self.padding])
+        x = F.pad(x, [self.padding, self.padding, self.padding * 2, self.padding * 2, self.padding * 2,
+                      self.padding * 2])
         return x
 
 class branch2(nn.Module):
@@ -328,53 +328,35 @@ class branch2(nn.Module):
 
 gelu = torch.nn.GELU()
 
-width = 36
+width = 32
 Net = MIONetCartesianProd(
-    layer_sizes_branch1=[10 * 100 * 100 * 5, branch1(width)], layer_sizes_branch2=[3 * 28, branch2(width)],
+    layer_sizes_branch1=[10 * 100 * 100 * 5, branch1(width)], layer_sizes_branch2=[3 * 28, branch2(width)], #branch2 is not used
     layer_sizes_trunk=[1, 100, 100, 100, width],
     activation={"branch1": gelu, "branch2": gelu, "trunk": gelu, "merger": gelu, "output merger": gelu},
     kernel_initializer="Glorot normal",
-    regularization=("l2", 1e-6),
+    # regularization=("l2", 4e-6),
     trunk_last_activation=False,
     merge_operation="mul",
     layer_sizes_merger=None,
     output_merge_operation="mul",
-    layer_sizes_output_merger=[5, decoder(10, 10, 10, width)])
+    layer_sizes_output_merger=[5, decoder(20, 20, 2, width)])
 
-level = 2
-
-ntrain = 5965
 nval = 1
-eps = 0.0001
 
-# t = np.cumsum(np.power(1.421245, range(24))).astype(np.float32)[:, None]
-# t = t / t[-1]
-trunk_input = np.load('./trunk_input.npy').astype(np.float32)
-t = trunk_input
+t = np.load('../datasets/trunk_input.npy').astype(np.float32)
 
-mean_ = np.load(f'./dP{level}_inputs_mean_std.npz')['mean']
-std_ = np.load(f'./dP{level}_inputs_mean_std.npz')['std']+eps
-x_train1 = np.load(f'./dP_LGR{level}_train_input1.npz')['input'][:ntrain].astype(np.float32)
-x_train2 = np.load(f'./dP_LGR{level}_train_input2.npz')['input'][:ntrain].astype(np.float32)
-x_train2 = (x_train2 - mean_)/(std_ + eps)
-x_train = np.concatenate([x_train1, x_train2], axis=-1)
-x_train_MIO = np.load(f'./dP_LGR{level}_train_input1.npz')['input'][:ntrain, 0, 0, 0, 5:6].astype(np.float32) #Not used
-x_train = (x_train, x_train_MIO, t)
-mean = torch.from_numpy(np.load(f'./dP{level}_outputs_mean_std.npz')['mean']).cuda()
-std = torch.from_numpy(np.load(f'./dP{level}_outputs_mean_std.npz')['std']+eps).cuda()
-y_train = np.moveaxis(np.load(f'./dP_LGR{level}_train_output.npz')['output'][:ntrain], 4, 1).astype(np.float32)
+mean = torch.from_numpy(np.load('./dP0_outputs_mean_std.npz')['mean']).cuda()
+std = torch.from_numpy(np.load('./dP0_outputs_mean_std.npz')['std']).cuda()
 
-x_test1 = np.load(f'./dP_LGR{level}_val_input1.npz')['input'][-nval:].astype(np.float32)
-x_test2 = np.load(f'./dP_LGR{level}_val_input2.npz')['input'][-nval:].astype(np.float32)
-x_test2 = (x_test2 - mean_)/(std_ + eps)
-x_test = np.concatenate([x_test1, x_test2], axis=-1)
-x_test_MIO = np.load(f'./dP_LGR{level}_val_input1.npz')['input'][-nval:, 0, 0, 0, 5:6].astype(np.float32)
+x_test = np.load('./dP_GLOBAL_val_input.npz')['input'][-nval:].astype(np.float32)
+x_test[..., -1] = (x_test[..., -1] - 1.1501) / (0.9758) #Normalization
+x_test_MIO = np.load('./dP_GLOBAL_val_input.npz')['input'][-nval:, 0, 0, 0, 5:6].astype(np.float32)
 x_test = (x_test, x_test_MIO, t)
-y_test = np.moveaxis(np.load(f'./dP_LGR{level}_val_output.npz')['output'][-nval:], 4, 1).astype(np.float32)
+y_test = np.moveaxis(np.load('./dP_GLOBAL_val_output.npz')['output'][-nval:], 4, 1).astype(np.float32)
 
 time_batch = 6
 
-data = QuadrupleCartesianProd(x_train, y_train, x_test, y_test, time_batch, 24)
+data = QuadrupleCartesianProd(x_test, y_test, x_test, y_test, time_batch, 24)
 
 def rel(y_true, y_pred):
     indices_timestep = data.indices_timestep
@@ -399,16 +381,54 @@ def mkdir(path):
     else:
         return False
 
-path = f'./dP{level}_model'
-mkdir(path)
+model.compile("adam", loss=rel, lr=1e-3, decay=("step", 2407*2*round(24/time_batch), 0.9))
 
-start_time = time.time()
+directory = './dP0_saved_models'
+model_name = f'model.ckpt-xxxx' #Write model name here
 
-model.compile("adam", loss=rel, lr=1e-3, decay=("step", ntrain*2*round(24/time_batch), 0.9))
-checker = dde.callbacks.ModelCheckpoint(f"{path}/model.ckpt", save_better_only=True, period=ntrain*round(24/time_batch))
-losshistory, train_state = model.train(epochs=ntrain*round(24/time_batch)*num_epochs, batch_size=1, display_every=ntrain*round(24 / time_batch), callbacks=[checker])
+x_test_field = np.load('dP_GLOBAL_test_input.npz')['input'].astype(np.float32)
+x_test_field[..., -1] = (x_test_field[..., -1] - 1.1501) / (0.9758)
+x_test_MIO = np.load('dP_GLOBAL_test_input.npz')['input'][:, 0, 0, 0, 5:6].astype(np.float32)
+x_test = (x_test_field, x_test_MIO, t)
+y_test = np.moveaxis(np.load('dP_GLOBAL_test_output.npz')['output'], 4, 1).astype(np.float32)
 
-end_time = time.time()
-training_time = end_time - start_time
-print(f"Training time: {training_time:.4f} seconds")
-print(model.net.num_trainable_parameters())
+model.restore(f"{directory}/{model_name}", verbose = 1)
+
+next_level_input = np.empty((0, 24, 40, 40, 25, 1))
+current_model_output = np.empty((0, 24, 100, 100, 5, 1))
+
+global_data = np.genfromtxt('../datasets/dP0_test.txt', delimiter='\n', dtype=str)
+lgr_data = np.genfromtxt('../datasets/level1-4_test.txt', delimiter='\n', dtype=str)
+
+for index in range(len(x_test_field)): #raw data files (npy files from googledrive) is required 
+    x_test = (x_test_field[index:index+1], x_test_MIO[index:index+1], t) 
+    y_pred = model.predict(x_test)
+    y_pred = (y_pred * std) + mean
+
+    current_model_output = np.vstack((current_model_output, y_pred))
+
+    string = global_data[index]
+    global_parts = string.split('_')
+    slope_name = "slope" + "_" + global_parts[1]
+    idx = global_parts[2]
+    case_name = f'case_{idx}'
+    meta_data = np.load(f'meta_data/{slope_name}_{idx}.npy', allow_pickle=True).tolist()
+
+    WELL_LIST = meta_data[case_name]['WELL_LIST']
+    GRID_IDX_DICT = meta_data[case_name]['GRID_IDX_DICT']
+
+    for well in WELL_LIST:
+        I1, I2 = GRID_IDX_DICT[well]['LGR1']['I1']-1-15, GRID_IDX_DICT[well]['LGR1']['I2']+15
+        J1, J2 = GRID_IDX_DICT[well]['LGR1']['J1']-1-15, GRID_IDX_DICT[well]['LGR1']['J2']+15
+        coarse = y_pred[:,:,I1:I2,J1:J2,...]
+        coarse = np.repeat(coarse, 5, axis = -2)
+        next_level_input = np.vstack((next_level_input, coarse))
+
+next_level_input = np.moveaxis(next_level_input, 1, 4).astype(np.float32)
+next_level_input = next_level_input.reshape((-1, 40, 40, 25, 24))
+current_model_output = current_model_output.astype(np.float32)
+
+np.savez('dP_LGR1_test_input2_sequential.npz', next_level_input)
+np.savez('dP0_test_pred.npz', current_model_output)
+
+

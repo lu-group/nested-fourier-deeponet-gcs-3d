@@ -344,7 +344,7 @@ Net = MIONetCartesianProd(
 
 nval = 1
 
-trunk_input = np.load('./trunk_input.npy').astype(np.float32)
+trunk_input = np.load('../datasets/trunk_input.npy').astype(np.float32)
 t = trunk_input
 
 mean_ = np.load(f'./dP{level}_inputs_mean_std.npz')['mean']
@@ -352,7 +352,7 @@ std_ = np.load(f'./dP{level}_inputs_mean_std.npz')['std']
 mean = np.load(f'./dP{level}_outputs_mean_std.npz')['mean']
 std = np.load(f'./dP{level}_outputs_mean_std.npz')['std']
 x_test1 = np.load(f'./dP_LGR{level}_test_input1.npz')['input'][:nval].astype(np.float32)
-x_test2 = np.load(f'dP_LGR{level}_test_input2.npz')['arr_0'][:nval].astype(np.float32)
+x_test2 = np.load(f'./dP_LGR{level}_test_input2.npz')['arr_0'][:nval].astype(np.float32)
 x_test2 = (x_test2 - mean_)/(std_)
 x_test = np.concatenate([x_test1, x_test2], axis=-1)
 x_test_MIO = np.load(f'./dP_LGR{level}_test_input1.npz')['input'][:nval, 0, 0, 0, 5:6].astype(np.float32)
@@ -373,7 +373,7 @@ def rel(y_true, y_pred):
 model = dde.Model(data, Net)
 model.compile("adam", loss=rel, lr=1e-3, decay=("step", 5965*2*round(24 / time_batch), 0.9))
 
-directory = f'./'
+directory = f'./dP{level}_saved_models'
 model_name = f'model.ckpt-xxxx' #Write model name here
 
 x_test1 = np.load(f'./dP_LGR{level}_test_input1.npz')['input'].astype(np.float32)
@@ -385,8 +385,8 @@ x_test_MIO = np.load(f'./dP_LGR{level}_test_input1.npz')['input'][:, 0, 0, 0, 5:
 
 model.restore(f"{directory}/{model_name}", verbose = 1)
 
-global_data = np.genfromtxt('dP0_test.txt', delimiter='\n', dtype=str)
-lgr_data = np.genfromtxt('level1-4_test.txt', delimiter='\n', dtype=str)
+global_data = np.genfromtxt('../datasets/dP0_test.txt', delimiter='\n', dtype=str)
+lgr_data = np.genfromtxt('../datasets/level1-4_test.txt', delimiter='\n', dtype=str)
 
 if level == 1:    
     next_level_input = np.empty((0, 24, 40, 40, 50, 1))
@@ -397,9 +397,7 @@ if level == 1:
         x_test = (x_test_temp, x_test_MIO[index:index+1], t) 
         y_pred = model.predict(x_test)
         y_pred = (y_pred * std) + mean
-        
         current_model_output = np.vstack((current_model_output, y_pred))
-
         coarse = np.repeat(y_pred, 2, axis = -2)
         next_level_input = np.vstack((next_level_input, coarse))
 

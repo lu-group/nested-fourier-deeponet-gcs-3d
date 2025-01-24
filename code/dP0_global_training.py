@@ -344,7 +344,7 @@ Net = MIONetCartesianProd(
 ntrain = 2407
 nval = 1
 
-t = np.load('./trunk_input.npy').astype(np.float32)
+t = np.load('../datasets/trunk_input.npy').astype(np.float32)
 
 x_train = np.load('./dP_GLOBAL_train_input.npz')['input'][:ntrain].astype(np.float32)
 x_train[..., -1] = (x_train[..., -1] - 1.1501) / (0.9758)
@@ -387,7 +387,7 @@ def mkdir(path):
     else:
         return False
 
-path = './dP0_model'
+path = './dP0_saved_models'
 mkdir(path)
 
 start_time = time.time()
