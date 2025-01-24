@@ -15,7 +15,17 @@ Steps to generate the full dataset for Nested Fourier-DeepONet:
 - step 4: run [data_generation.py](https://github.com/MinZhu123/nested-fourier-deeponet-gcs-3d/blob/main/datasets/data_generation.py) to covert `.pt` files into our `.npz` files
 
 ## Code
-to be uploaded
+
+Fourier-DeepONet training
+
+Pressure buildup models:
+- Level 0: Run [dP0_global_training.py](https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/dP0_global_training.py)
+- Level 1-4: Adjust the level of interest in line 12 and run [dP1-4_LGR_training.py](https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/dP1-4_LGR_training.py)
+
+Gas saturation models:
+- Level 1-4: Adjust the level of interest in line 12 and run [SG1-4_LGR_training.py](https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/SG1-4_LGR_training.py)
+
+
 
 ## Cite this work
 
