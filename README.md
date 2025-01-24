@@ -30,21 +30,21 @@ Gas saturation models:
 [Raw data](https://github.com/gegewen/nested-fno) files are required.
 
 Pressure buildup:
-- Level 0: Run [dP0_create_output.py]
-- Level 1-4: Run [dP1-4_create_output.py]
+- Level 0: Run [dP0_create_output.py](https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/dP0_create_output.py)
+- Level 1-4: Run [dP1-4_create_output.py](https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/dP1-4_create_output.py)
 
 Gas saturation:
-- Level 1-4: Run [SG1-4_create_output.py]
+- Level 1-4: Run [SG1-4_create_output.py](9https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/SG1-4_create_output.py)
 
 **Evaluation**
 
 Outputs saved in npz files are required to run the following evaluation code
 
 Pressure buildup:
-- Run [dP_evaluation_code.py]
+- Run [dP_evaluation_code.py](https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/dP_evaluation_code.py)
 
 Gas Saturation:
-- Run [SG_evaluation_code.py]
+- Run [SG_evaluation_code.py](https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/SG_evaluation_code.py)
 
 
 
@@ -53,7 +53,7 @@ Gas Saturation:
 If you use this data or code for academic research, you are encouraged to cite the following paper:
 
 ```
-@article{lee2024efficient},
+@article{lee2024efficient,
 author = {Jonathan E. Lee, Min Zhu, Ziqiao Xi, Kun Wang, Yanhua O. Yuan and Lu Lu},
 title = {Efficient and generalizable nested Fourier-DeepONet for three-dimensional geological carbon sequestration},
 journal = {Engineering Applications of Computational Fluid Mechanics},
