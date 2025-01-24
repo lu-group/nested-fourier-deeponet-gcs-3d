@@ -34,7 +34,7 @@ Pressure buildup:
 - Level 1-4: Adjust the level of interest in line 12 and run [dP1-4_create_output.py](https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/dP1-4_create_output.py)
 
 Gas saturation:
-- Level 1-4: Adjust the level of interest in line 12 and run [SG1-4_create_output.py](9https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/SG1-4_create_output.py)
+- Level 1-4: Adjust the level of interest in line 12 and run [SG1-4_create_output.py](https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/SG1-4_create_output.py)
 
 **Evaluation**
 
@@ -45,7 +45,6 @@ Pressure buildup:
 
 Gas Saturation:
 - Run [SG_evaluation_code.py](https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/SG_evaluation_code.py)
-
 
 
 ## Cite this work
