@@ -16,7 +16,7 @@ Steps to generate the full dataset for Nested Fourier-DeepONet:
 
 ## Code
 
-Fourier-DeepONet training
+**Fourier-DeepONet training**
 
 Pressure buildup models:
 - Level 0: Run [dP0_global_training.py](https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/dP0_global_training.py)
@@ -24,6 +24,27 @@ Pressure buildup models:
 
 Gas saturation models:
 - Level 1-4: Adjust the level of interest in line 12 and run [SG1-4_LGR_training.py](https://github.com/lu-group/nested-fourier-deeponet-gcs-3d/blob/main/code/SG1-4_LGR_training.py)
+
+**Output generation**
+
+[Raw data](https://github.com/gegewen/nested-fno) files are required.
+
+Pressure buildup:
+- Level 0: Run [dP0_create_output.py]
+- Level 1-4: Run [dP1-4_create_output.py]
+
+Gas saturation:
+- Level 1-4: Run [SG1-4_create_output.py]
+
+**Evaluation**
+
+Outputs saved in npz files are required to run the following evaluation code
+
+Pressure buildup:
+- Run [dP_evaluation_code.py]
+
+Gas Saturation:
+- Run [SG_evaluation_code.py]
 
 
 
