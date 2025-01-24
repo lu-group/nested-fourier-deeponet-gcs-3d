@@ -54,14 +54,14 @@ If you use this data or code for academic research, you are encouraged to cite t
 
 ```
 @article{lee2024efficient,
-author  = {Jonathan E. Lee, Min Zhu, Ziqiao Xi, Kun Wang, Yanhua O. Yuan and Lu Lu},
-title   = {Efficient and generalizable nested Fourier-DeepONet for three-dimensional geological carbon sequestration},
-journal = {Engineering Applications of Computational Fluid Mechanics},
-volume  = {18},
-number  = {1},
-pages   = {2435457},
-year    = {2024},
-doi     = {https://doi.org/10.1080/19942060.2024.2435457}
+  author  = {Jonathan E. Lee, Min Zhu, Ziqiao Xi, Kun Wang, Yanhua O. Yuan and Lu Lu},
+  title   = {Efficient and generalizable nested Fourier-DeepONet for three-dimensional geological carbon sequestration},
+  journal = {Engineering Applications of Computational Fluid Mechanics},
+  volume  = {18},
+  number  = {1},
+  pages   = {2435457},
+  year    = {2024},
+  doi     = {https://doi.org/10.1080/19942060.2024.2435457}
 }
 ```
 
