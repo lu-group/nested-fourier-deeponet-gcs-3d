@@ -10,10 +10,10 @@ The full dataset for Nested Fourier-DeepONet is available on [OneDrive](https://
 
 Steps to generate the full dataset for Nested Fourier-DeepONet:
 
-- step 1: download [raw data](https://github.com/gegewen/nested-fno)
-- step 2: run [file_config.sh](https://github.com/gegewen/nested-fno/blob/main/data_config/file_config.sh) to convert `.npy` file into `.pt` files
-- step 3: create a new folder `datasets_nested_fno` under the main folder and put the files generated in step 2 into the folder `datasets_nested_fno`
-- step 4: run [data_generation.py](https://github.com/MinZhu123/nested-fourier-deeponet-gcs-3d/blob/main/datasets/data_generation.py) to covert `.pt` files into our `.npz` files
+- Step 1: Download [raw data](https://github.com/gegewen/nested-fno)
+- Step 2: Run [file_config.sh](https://github.com/gegewen/nested-fno/blob/main/data_config/file_config.sh) to convert `.npy` file into `.pt` files
+- Step 3: Create a new folder `datasets_nested_fno` under the main folder and put the files generated in step 2 into the folder `datasets_nested_fno`
+- Step 4: Run [data_generation.py](https://github.com/MinZhu123/nested-fourier-deeponet-gcs-3d/blob/main/datasets/data_generation.py) to covert `.pt` files into our `.npz` files
 
 ## Code
 
@@ -54,14 +54,14 @@ If you use this data or code for academic research, you are encouraged to cite t
 
 ```
 @article{lee2024efficient,
-author = {Jonathan E. Lee, Min Zhu, Ziqiao Xi, Kun Wang, Yanhua O. Yuan and Lu Lu},
-title = {Efficient and generalizable nested Fourier-DeepONet for three-dimensional geological carbon sequestration},
+author  = {Jonathan E. Lee, Min Zhu, Ziqiao Xi, Kun Wang, Yanhua O. Yuan and Lu Lu},
+title   = {Efficient and generalizable nested Fourier-DeepONet for three-dimensional geological carbon sequestration},
 journal = {Engineering Applications of Computational Fluid Mechanics},
-volume = {18},
-number = {1},
-pages = {2435457},
-year = {2024},
-doi = {https://doi.org/10.1080/19942060.2024.2435457}
+volume  = {18},
+number  = {1},
+pages   = {2435457},
+year    = {2024},
+doi     = {https://doi.org/10.1080/19942060.2024.2435457}
 }
 ```
 

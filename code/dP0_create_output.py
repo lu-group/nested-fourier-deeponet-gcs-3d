@@ -3,7 +3,6 @@ os.environ['DDE_BACKEND'] = 'pytorch'
 from deepxde.nn import activations
 from deepxde.nn.pytorch.fnn import FNN
 import deepxde as dde
-import time
 import torch
 import numpy as np
 import torch.nn as nn

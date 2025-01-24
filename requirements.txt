@@ -1,0 +1,5 @@
+# A list of packages used by the project, sorted in alphabetical order
+# Exclude Python's built-in packages
+deepxde
+numpy
+torch
